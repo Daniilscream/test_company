@@ -1,0 +1,313 @@
+swagger: "2.0"
+info:
+  description: "Company_test"
+  version: "1.0.0"
+  title: "Swagger Company_test"
+
+host: "localhost:8080"
+
+tags:
+  - name: "employee"
+    description: "Информация по сотрудникам"
+  - name: "department "
+    description: "Информация по отделам"
+schemes:
+  - "https"
+  - "http"
+paths:
+  /employee/workingdays/{employeeId}:
+    get:
+      tags:
+        - "employee"
+      summary: "Количество рабочих дней сотрудника"
+      operationId: "getWorkingDays"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "employeeId"
+          description: "Id сотрудника"
+          required: true
+          type: "integer"
+          format: "int64"
+          minimum: 1.0
+      responses:
+        "200":
+          description: "successful operation"
+          
+  /employee/lastvacation/{employeeId}:
+    get:
+      tags:
+        - "employee"
+      summary: " Дата последнего отпуска"
+      operationId: "getLastVacation"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "employeeId"
+          description: "Id сотрудника"
+          required: true
+          type: "integer"
+          format: "int64"
+          minimum: 1.0
+      responses:
+        "200":
+          description: "successful operation"
+          
+  /employee/vacationOrSickLeave:        
+    put:
+      tags:
+        - "employee"
+      summary: "Отметка больничного или отпуска"
+      description: ""
+      operationId: "vacationOrSickLeave"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "vacationOrSickLeave"
+          description: "Отметка больничного или отпуска"
+          schema:
+                $ref: "#/definitions/vacationOrSickLeave"
+
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "Invalid IDs"
+          
+  /employee/visitOrWalk :        
+    put:
+      tags:
+        - "employee"
+      summary: "Отметка посещения или прогула"
+      description: ""
+      operationId: "visitOrWalk"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "visitOrWalk"
+          description: "Отметка посещения или прогула"
+          schema:
+                $ref: "#/definitions/visitOrWalk"
+
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "Invalid IDs"
+          
+  /employee/add:
+    post:
+      tags:
+        - "employee"
+      summary: "Добавление нового сотрудника"
+      operationId: "addEmployee"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "addEmployee"
+          in: "body"
+          required: true
+
+          description: "Добавление нового сотрудника"
+          schema:
+            $ref: "#/definitions/addEmployee"
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "Invalid parameters"
+          
+  /employee/delete/{employeeId}:
+    delete:
+      tags:
+        - "employee"
+      summary: "Удаление сотрудника"
+      description: ""
+      operationId: "deleteEmployee"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "employeeId"
+          in: "path"
+          description: "Id сотрудника"
+          required: true
+          type: "integer"
+          format: "int64"
+          minimum: 1.0
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Employee not found"
+          
+          
+          
+  /department/workinghours/{departmentId}:
+    get:
+      tags:
+        - "department"
+      summary: "Количество рабочих часов отдела"
+      operationId: "getWorkingHours"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "path"
+          name: "departmentId"
+          description: "Id отдела"
+          required: true
+          type: "integer"
+          format: "int64"
+          minimum: 1.0
+      responses:
+        "200":
+          description: "successful operation"
+          
+  /department/infoAllDepartment:
+    get:
+      tags:
+        - "department"
+      summary: "Информация по отделам"
+      operationId: "infoAllDepartment"
+      produces:
+        - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/infoAllDepartment"   
+              
+              
+  /department/add:
+    post:
+      tags:
+        - "department"
+      summary: "Добавление нового отдела"
+      operationId: "addDepartment"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "addDepartment"
+          in: "body"
+          required: true
+
+          description: "Добавление нового сотрудника"
+          schema:
+            $ref: "#/definitions/addDepartment"
+      responses:
+        "200":
+          description: "successful operation"
+        "400":
+          description: "Invalid parameters"
+          
+  /department/delete/{departmentId}:
+    delete:
+      tags:
+        - "department"
+      summary: "Удаление отдела"
+      description: ""
+      operationId: "deleteDepartment"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "departmentId"
+          in: "path"
+          description: "Id отдела"
+          required: true
+          type: "integer"
+          format: "int64"
+          minimum: 1.0
+      responses:
+        "400":
+          description: "Invalid ID supplied"
+        "404":
+          description: "Department not found"
+          
+
+definitions:
+
+  vacationOrSickLeave:
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      date:
+        type: "string"
+      daysForVacation:
+        type: "integer"
+        format: "int32"
+      daysForSickLeave:
+        type: "integer"
+        format: "int32"
+        
+  visitOrWalk:  
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      date:
+        type: "string"
+      visit:
+        type: "boolean"
+        format: "boolean"
+      time:
+        type: "integer"
+        format: "int32"
+        
+  addEmployee:
+    properties:
+      dateOfReceipt:
+        type: "string"
+      FullName:
+        type: "string"
+      position:
+        type: "string"
+      department_id:
+        type: "object"
+        properties:
+          id:
+            type: "integer"
+            format: "int64"
+        
+  infoAllDepartment: 
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      nameDepartment:
+        type: "string"
+      employees:
+        type: "array"
+        items:
+          $ref: "#/definitions/employee"
+      workingHours:
+        type: "integer"
+        format: "int64"
+      presentEmployees:
+        type: "integer"
+        format: "int32"
+      missingEmployees: 
+        type: "integer"
+        format: "int32"
+        
+  addDepartment:
+    properties:
+      nameDepartment:
+        type: "string"
+        
+  employee:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      FullName:
+        type: "string"
+      position:
+        type: "string"
