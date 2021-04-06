@@ -4,18 +4,19 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
-public class Employee {
+public class EmployeeEntity {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -32,10 +33,10 @@ public class Employee {
     @ApiModelProperty(value = "")
     private String position;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "department_id")
     @ApiModelProperty(value = "")
-    private Department department;
+    private DepartmentEntity departmentEntity;
 
     @ApiModelProperty(value = "")
     @Valid
@@ -47,6 +48,9 @@ public class Employee {
 
     @ApiModelProperty(value = "")
     private Date date;
+
+    @ManyToMany
+    private Set<WorkingDay> workingDays;
 
     @ApiModelProperty(value = "")
     private boolean visit;
@@ -67,7 +71,7 @@ public class Employee {
         this.id = id;
     }
 
-    public Employee id(Long id) {
+    public EmployeeEntity id(Long id) {
         this.id = id;
         return this;
     }
@@ -85,7 +89,7 @@ public class Employee {
         this.dateOfReceipt = dateOfReceipt;
     }
 
-    public Employee dateOfReceipt(Date dateOfReceipt) {
+    public EmployeeEntity dateOfReceipt(Date dateOfReceipt) {
         this.dateOfReceipt = dateOfReceipt;
         return this;
     }
@@ -103,7 +107,7 @@ public class Employee {
         this.fullName = fullName;
     }
 
-    public Employee fullName(String fullName) {
+    public EmployeeEntity fullName(String fullName) {
         this.fullName = fullName;
         return this;
     }
@@ -121,7 +125,7 @@ public class Employee {
         this.position = position;
     }
 
-    public Employee position(String position) {
+    public EmployeeEntity position(String position) {
         this.position = position;
         return this;
     }
@@ -131,16 +135,16 @@ public class Employee {
      * @return departmentId
      **/
     @JsonProperty("department_id")
-    public Department getDepartment() {
-        return department;
+    public DepartmentEntity getDepartment() {
+        return departmentEntity;
     }
 
-    public void setDepartmentId(Department department) {
-        this.department = department;
+    public void setDepartmentId(DepartmentEntity departmentEntity) {
+        this.departmentEntity = departmentEntity;
     }
 
-    public Employee departmentId(Department department) {
-        this.department = department;
+    public EmployeeEntity departmentId(DepartmentEntity departmentEntity) {
+        this.departmentEntity = departmentEntity;
         return this;
     }
 
@@ -182,6 +186,14 @@ public class Employee {
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    public Set<WorkingDay> getWorkingDays() {
+        return workingDays;
+    }
+
+    public void setWorkingDays(Set<WorkingDay> workingDays) {
+        this.workingDays = workingDays;
     }
 
     /**

@@ -34,6 +34,9 @@ paths:
       responses:
         "200":
           description: "successful operation"
+          schema:
+            type: "integer"
+            format: "int32"
           
   /employee/lastvacation/{employeeId}:
     get:
@@ -54,6 +57,9 @@ paths:
       responses:
         "200":
           description: "successful operation"
+          schema:
+            type: "string"
+            
           
   /employee/vacationOrSickLeave:        
     put:
@@ -108,13 +114,17 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - name: "addEmployee"
+        - name: "employee"
           in: "body"
           required: true
-
           description: "Добавление нового сотрудника"
           schema:
-            $ref: "#/definitions/addEmployee"
+           $ref: "#/definitions/employee"
+        - name: "department_id"
+          in: "query"
+          required: true
+          type: "integer"
+          format: "int64"
       responses:
         "200":
           description: "successful operation"
@@ -165,6 +175,9 @@ paths:
       responses:
         "200":
           description: "successful operation"
+          schema:
+            type: "integer"
+            format: "int64"
           
   /department/infoAllDepartment:
     get:
@@ -181,7 +194,7 @@ paths:
           schema:
             type: "array"
             items:
-              $ref: "#/definitions/infoAllDepartment"   
+              $ref: "#/definitions/department"   
               
               
   /department/add:
@@ -196,10 +209,9 @@ paths:
         - name: "addDepartment"
           in: "body"
           required: true
-
           description: "Добавление нового сотрудника"
           schema:
-            $ref: "#/definitions/addDepartment"
+            $ref: "#/definitions/department"
       responses:
         "200":
           description: "successful operation"
@@ -260,22 +272,7 @@ definitions:
         type: "integer"
         format: "int32"
         
-  addEmployee:
-    properties:
-      dateOfReceipt:
-        type: "string"
-      FullName:
-        type: "string"
-      position:
-        type: "string"
-      department_id:
-        type: "object"
-        properties:
-          id:
-            type: "integer"
-            format: "int64"
-        
-  infoAllDepartment: 
+  department:
     properties:
       id:
         type: "integer"
@@ -286,27 +283,15 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/employee"
-      workingHours:
-        type: "integer"
-        format: "int64"
-      presentEmployees:
-        type: "integer"
-        format: "int32"
-      missingEmployees: 
-        type: "integer"
-        format: "int32"
-        
-  addDepartment:
-    properties:
-      nameDepartment:
-        type: "string"
-        
+          
   employee:
     type: "object"
     properties:
       id:
         type: "integer"
         format: "int64"
+      dateOfReceipt:
+        type: "string"
       FullName:
         type: "string"
       position:

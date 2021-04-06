@@ -6,10 +6,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class WorkingDay {
@@ -21,17 +22,17 @@ public class WorkingDay {
 
     private Date date;
 
-    @OneToMany
-    private List<Employee> workingEmployees = new ArrayList<>();
+    @ManyToMany
+    private Set<EmployeeEntity> workingEmployeeEntities = new HashSet<>();
 
-    @OneToMany
-    private List<Employee> employeesOnVacation = new ArrayList<>();
+    @ManyToMany
+    private Set<EmployeeEntity> employeesOnVacation = new HashSet<>();
 
-    @OneToMany
-    private List<Employee> sickEmployees = new ArrayList<>();
+    @ManyToMany
+    private Set<EmployeeEntity> sickEmployeeEntities = new HashSet<>();
 
-    @OneToMany
-    private List<Employee> absentEmployees = new ArrayList<>();
+    @ManyToMany
+    private Set<EmployeeEntity> absentEmployeeEntities = new HashSet<>();
 
     public WorkingDay(){}
 
@@ -47,35 +48,35 @@ public class WorkingDay {
         this.date = date;
     }
 
-    public List<Employee> getWorkingEmployees() {
-        return workingEmployees;
+    public Set<EmployeeEntity> getWorkingEmployees() {
+        return workingEmployeeEntities;
     }
 
-    public void setWorkingEmployees(List<Employee> workingEmployees) {
-        this.workingEmployees = workingEmployees;
+    public void setWorkingEmployees(Set<EmployeeEntity> workingEmployeeEntities) {
+        this.workingEmployeeEntities = workingEmployeeEntities;
     }
 
-    public List<Employee> getEmployeesOnVacation() {
+    public Set<EmployeeEntity> getEmployeesOnVacation() {
         return employeesOnVacation;
     }
 
-    public void setEmployeesOnVacation(List<Employee> employeesOnVacation) {
+    public void setEmployeesOnVacation(Set<EmployeeEntity> employeesOnVacation) {
         this.employeesOnVacation = employeesOnVacation;
     }
 
-    public List<Employee> getSickEmployees() {
-        return sickEmployees;
+    public Set<EmployeeEntity> getSickEmployees() {
+        return sickEmployeeEntities;
     }
 
-    public void setSickEmployees(List<Employee> sickEmployees) {
-        this.sickEmployees = sickEmployees;
+    public void setSickEmployees(Set<EmployeeEntity> sickEmployeeEntities) {
+        this.sickEmployeeEntities = sickEmployeeEntities;
     }
 
-    public List<Employee> getAbsentEmployees() {
-        return absentEmployees;
+    public Set<EmployeeEntity> getAbsentEmployees() {
+        return absentEmployeeEntities;
     }
 
-    public void setAbsentEmployees(List<Employee> absentEmployees) {
-        this.absentEmployees = absentEmployees;
+    public void setAbsentEmployees(Set<EmployeeEntity> absentEmployeeEntities) {
+        this.absentEmployeeEntities = absentEmployeeEntities;
     }
 }
