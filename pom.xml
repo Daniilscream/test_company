@@ -192,24 +192,13 @@
 				</executions>
 			</plugin>
 
-<!--			<plugin>-->
-<!--				<groupId>io.swagger</groupId>-->
-<!--				<artifactId>swagger-codegen-maven-plugin</artifactId>-->
-<!--				<version>2.4.0</version>-->
-<!--				<configuration>-->
-<!--					<inputSpec>${project.basedir}/src/main/resources/yml/swagger.yml</inputSpec>-->
-<!--					<ignoreFileOverride>${project.basedir}/.swagger-codegen-ignore</ignoreFileOverride>-->
-<!--					<language>spring</language>-->
-<!--				</configuration>-->
-<!--			</plugin>-->
-
 			<plugin>
 				<groupId>io.swagger</groupId>
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
 				<version>2.4.0</version>
 				<configuration>
 					<inputSpec>${yaml.file}</inputSpec>
-					<ignoreFileOverride>${project.basedir}/.swagger-codegen-ignore</ignoreFileOverride>
+					<ignoreFileOverride>${project.basedir}/swagger-codegen-ignore</ignoreFileOverride>
 					<configOptions>
 						<sourceFolder>${generated-sources-java-path}</sourceFolder>
 					</configOptions>
