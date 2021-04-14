@@ -173,6 +173,16 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<mainClass>ru.aisa.test_company.restservice.Application</mainClass>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
