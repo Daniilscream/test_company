@@ -9,6 +9,7 @@ import org.apache.shiro.realm.text.IniRealm;
 import org.apache.shiro.spring.web.config.DefaultShiroFilterChainDefinition;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.ExitCodeGenerator;
@@ -65,5 +66,15 @@ public class Application implements CommandLineRunner {
 		filter.addPathDefinition("/**", "anon");
 
 		return filter;
+	}
+
+	@Bean
+	public CookieRememberMeManager rememberMeManager() {
+		CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+		SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+		simpleCookie.setMaxAge(259200000);
+		cookieRememberMeManager.setCookie(simpleCookie);
+		cookieRememberMeManager.setCipherKey(Base64.decode("6ZmI6I2j5Y+R5aSn5ZOlAA=="));
+		return cookieRememberMeManager;
 	}
 }
