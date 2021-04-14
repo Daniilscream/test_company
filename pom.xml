@@ -210,27 +210,26 @@
 				<configuration>
 					<inputSpec>${yaml.file}</inputSpec>
 					<ignoreFileOverride>${project.basedir}/.swagger-codegen-ignore</ignoreFileOverride>
-<!--					<configOptions>-->
-<!--						<sourceFolder>${generated-sources-java-path}</sourceFolder>-->
-<!--					</configOptions>-->
-<!--					<output>${generated-sources-path}</output>-->
+					<configOptions>
+						<sourceFolder>${generated-sources-java-path}</sourceFolder>
+					</configOptions>
+					<output>${generated-sources-path}</output>
 					<language>spring</language>
 				</configuration>
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<phase>generate-sources</phase>-->
-<!--						<goals>-->
-<!--							<goal>generate</goal>-->
-<!--						</goals>-->
-<!--						<configuration>-->
-<!--							<language>spring</language>-->
-<!--							<modelPackage>${project.groupId}.swagger.model</modelPackage>-->
-<!--							<apiPackage>${project.groupId}.swagger.api</apiPackage>-->
-<!--							&lt;!&ndash;							<invokerPackage>${project.groupId}.swagger.invoker</invokerPackage>&ndash;&gt;-->
-<!--							<inputSpec/>-->
-<!--						</configuration>-->
-<!--					</execution>-->
-<!--				</executions>-->
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<language>spring</language>
+							<modelPackage>${project.groupId}.swagger.model</modelPackage>
+							<apiPackage>${project.groupId}.swagger.api</apiPackage>
+							<inputSpec/>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 
 			<plugin>
