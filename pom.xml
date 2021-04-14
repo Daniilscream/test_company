@@ -22,6 +22,7 @@
 		<yaml.file>${project.basedir}/src/main/resources/swagger.yaml</yaml.file>
 		<generated-sources-path>${project.build.directory}/generated-sources</generated-sources-path>
 		<generated-sources-java-path>main/java</generated-sources-java-path>
+		<vaadin.version>8.2.0</vaadin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -131,7 +132,41 @@
 			<artifactId>validation-api</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-spring-boot-starter</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.shiro/shiro-core -->
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-web</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-spring-boot-web-starter</artifactId>
+			<version>1.7.1</version>
+		</dependency>
 	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-bom</artifactId>
+				<version>${vaadin.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
@@ -140,32 +175,32 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<!--            For generation API from .yaml-->
+			<plugin>
+				<groupId>com.vaadin</groupId>
+				<artifactId>vaadin-maven-plugin</artifactId>
+				<version>8.0.6</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>update-theme</goal>
+							<goal>update-widgetset</goal>
+							<goal>compile</goal>
+							<!-- Comment out compile-theme goal to use on-the-fly theme compilation -->
+							<goal>compile-theme</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 <!--			<plugin>-->
-<!--				<groupId>org.openapitools</groupId>-->
-<!--				<artifactId>openapi-generator-maven-plugin</artifactId>-->
-<!--				<version>5.0.1</version>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<goals>-->
-<!--							<goal>generate</goal>-->
-<!--						</goals>-->
-<!--						<configuration>-->
-<!--							<generatorName>spring</generatorName>-->
-<!--							<inputSpec>${project.basedir}/src/main/resources/swagger.yaml</inputSpec>-->
-<!--							<output>${project.basedir}/target/</output>-->
-<!--							<generateApis>true</generateApis>-->
-<!--							<apiPackage>ru.aisa.test_company.restservice.api</apiPackage>-->
-<!--							<addCompileSourceRoot>false</addCompileSourceRoot>-->
-<!--							<modelPackage>ru.aisa.test_company.restservice.model</modelPackage>-->
-<!--							<generateApiTests>false</generateApiTests>-->
-<!--							<generateModelTests>false</generateModelTests>-->
-<!--							<generateApiDocumentation>false</generateApiDocumentation>-->
-<!--							<generateModelDocumentation>false</generateModelDocumentation>-->
-<!--							<generateSupportingFiles>false</generateSupportingFiles>-->
-<!--						</configuration>-->
-<!--					</execution>-->
-<!--				</executions>-->
+<!--				<groupId>io.swagger</groupId>-->
+<!--				<artifactId>swagger-codegen-maven-plugin</artifactId>-->
+<!--				<version>2.4.0</version>-->
+<!--				<configuration>-->
+<!--					<inputSpec>${project.basedir}/src/main/resources/yml/swagger.yml</inputSpec>-->
+<!--					<ignoreFileOverride>${project.basedir}/.swagger-codegen-ignore</ignoreFileOverride>-->
+<!--					<language>spring</language>-->
+<!--				</configuration>-->
 <!--			</plugin>-->
 
 			<plugin>
@@ -173,10 +208,29 @@
 				<artifactId>swagger-codegen-maven-plugin</artifactId>
 				<version>2.4.0</version>
 				<configuration>
-					<inputSpec>${project.basedir}/src/main/resources/yml/swagger.yml</inputSpec>
+					<inputSpec>${yaml.file}</inputSpec>
 					<ignoreFileOverride>${project.basedir}/.swagger-codegen-ignore</ignoreFileOverride>
+<!--					<configOptions>-->
+<!--						<sourceFolder>${generated-sources-java-path}</sourceFolder>-->
+<!--					</configOptions>-->
+<!--					<output>${generated-sources-path}</output>-->
 					<language>spring</language>
 				</configuration>
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<phase>generate-sources</phase>-->
+<!--						<goals>-->
+<!--							<goal>generate</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<language>spring</language>-->
+<!--							<modelPackage>${project.groupId}.swagger.model</modelPackage>-->
+<!--							<apiPackage>${project.groupId}.swagger.api</apiPackage>-->
+<!--							&lt;!&ndash;							<invokerPackage>${project.groupId}.swagger.invoker</invokerPackage>&ndash;&gt;-->
+<!--							<inputSpec/>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
 			</plugin>
 
 			<plugin>

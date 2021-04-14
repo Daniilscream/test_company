@@ -25,7 +25,7 @@ public class DepartmentEntity {
     @JsonProperty("nameDepartment")
     private String nameDepartment;
 
-    @OneToMany(mappedBy = "departmentEntity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "departmentEntity", fetch = FetchType.EAGER)
     @JsonProperty("employees")
     @Valid
     private List<EmployeeEntity> employeeEntities;
@@ -97,6 +97,10 @@ public class DepartmentEntity {
 
     public void setEmployees(List<EmployeeEntity> employeeEntities) {
         this.employeeEntities = employeeEntities;
+    }
+
+    public int getEmployeeSize(){
+        return employeeEntities.size();
     }
 
 

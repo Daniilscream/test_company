@@ -143,6 +143,13 @@ public class EmployeeEntity {
         this.departmentEntity = departmentEntity;
     }
 
+    public String getDepartmentName(){
+        if(departmentEntity == null){
+            return "";
+        }
+        return departmentEntity.getNameDepartment();
+    }
+
     public EmployeeEntity departmentId(DepartmentEntity departmentEntity) {
         this.departmentEntity = departmentEntity;
         return this;
