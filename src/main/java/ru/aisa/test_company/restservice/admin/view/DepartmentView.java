@@ -9,12 +9,13 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import ru.aisa.test_company.restservice.admin.CompanyUI;
 import ru.aisa.test_company.restservice.model.DepartmentEntity;
 import ru.aisa.test_company.restservice.repository.DepartmentRepository;
 
 import java.util.List;
 
-@SpringView(name="department")
+@SpringView(name="department", ui = {CompanyUI.class})
 public class DepartmentView extends VerticalLayout implements View {
 
     private DepartmentEditor editor;

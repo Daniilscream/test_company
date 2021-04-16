@@ -24,7 +24,7 @@ import ru.aisa.test_company.restservice.repository.EmployeeRepository;
 import javax.annotation.Resource;
 import javax.servlet.annotation.WebServlet;
 
-@SpringUI
+@SpringUI(path = "/admin")
 public class CompanyUI extends UI {
 
     private Navigator navigator;
@@ -37,12 +37,12 @@ public class CompanyUI extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-
         Subject subject = SecurityUtils.getSubject();
         navigator = new Navigator(this,this);
-        navigator.addView("login", new LoginView());
+
 
         if(!subject.isAuthenticated()) {
+            navigator.addView("login", new LoginView());
             getNavigator().navigateTo("login");
         } else {
             final HorizontalLayout rootLayout = new HorizontalLayout();
@@ -89,7 +89,7 @@ public class CompanyUI extends UI {
         return button;
     }
 
-    @WebServlet(urlPatterns = "/company.html*", name = "BasicsUIServlet", asyncSupported = true)
+    @WebServlet(urlPatterns = "/admin", name = "BasicsUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = CompanyUI.class, productionMode = false)
     public static class BasicsUIServlet extends VaadinServlet {
     }
