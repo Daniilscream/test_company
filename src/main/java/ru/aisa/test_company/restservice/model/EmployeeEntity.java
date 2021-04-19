@@ -3,8 +3,10 @@ package ru.aisa.test_company.restservice.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import ru.aisa.test_company.restservice.repository.WorkingDayRepository;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,10 +48,12 @@ public class EmployeeEntity {
     @Valid
     private int daysForSickLeave;
 
+    private int daysForWork;
+
     @ApiModelProperty(value = "")
     private Date date;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<WorkingDay> workingDays;
 
     @ApiModelProperty(value = "")
@@ -57,6 +61,8 @@ public class EmployeeEntity {
 
     @JsonProperty("time")
     private int time = 0;
+
+    private Date lastVacation;
 
     /**
      * Get id
@@ -197,6 +203,22 @@ public class EmployeeEntity {
 
     public Set<WorkingDay> getWorkingDays() {
         return workingDays;
+    }
+
+    public int getDaysForWork() {
+        return daysForWork;
+    }
+
+    public void setDaysForWork(int daysForWork) {
+        this.daysForWork = daysForWork;
+    }
+
+    public Date  getLastVacation() {
+        return lastVacation;
+    }
+
+    public void setLastVacation(Date lastVacation) {
+        this.lastVacation = lastVacation;
     }
 
     public void setWorkingDays(Set<WorkingDay> workingDays) {

@@ -136,6 +136,11 @@ public class EmployeeApiController implements EmployeeApi {
         }
         if(vacationOrSickLeave.getDaysForVacation() != 0) {
             selectedEmployeeEntity.setDaysForVacation(vacationOrSickLeave.getDaysForVacation());
+            try {
+                selectedEmployeeEntity.setLastVacation(formatDate.parse(vacationOrSickLeave.getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             workingDay.getEmployeesOnVacation().add(selectedEmployeeEntity);
         }else if(vacationOrSickLeave.getDaysForSickLeave() != 0) {
             selectedEmployeeEntity.setDaysForSickLeave(vacationOrSickLeave.getDaysForSickLeave());
@@ -169,6 +174,7 @@ public class EmployeeApiController implements EmployeeApi {
         if(visitOrWalk.isVisit()){
             workingDay.getWorkingEmployees().add(selectedEmployeeEntity);
             selectedEmployeeEntity.setTime(selectedEmployeeEntity.getTime() + visitOrWalk.getTime());
+            selectedEmployeeEntity.setDaysForWork(selectedEmployeeEntity.getDaysForWork() + 1);
         } else {
             workingDay.getAbsentEmployees().add(selectedEmployeeEntity);
         }

@@ -1,18 +1,13 @@
 package ru.aisa.test_company.restservice.admin;
 
 import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.navigator.Navigator;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.spring.annotation.SpringUI;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
+import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import ru.aisa.test_company.restservice.admin.view.DepartmentView;
@@ -27,66 +22,37 @@ import javax.servlet.annotation.WebServlet;
 @SpringUI(path = "/admin")
 public class CompanyUI extends UI {
 
-    private Navigator navigator;
-
     @Resource
     private DepartmentRepository departmentRepository;
 
     @Resource
     private EmployeeRepository employeeRepository;
 
+    private TabSheet tabs;
+
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         Subject subject = SecurityUtils.getSubject();
-        navigator = new Navigator(this,this);
-
 
         if(!subject.isAuthenticated()) {
-            navigator.addView("login", new LoginView());
-            getNavigator().navigateTo("login");
+            setContent(new LoginView());
         } else {
             final HorizontalLayout rootLayout = new HorizontalLayout();
             rootLayout.setSpacing(false);
             rootLayout.setSizeFull();
+            tabs = new TabSheet();
 
-            rootLayout.addComponent(createNavigation());
+            rootLayout.addComponent(tabs);
+            VerticalLayout tab1 = new VerticalLayout();
+            tab1.addComponent(new DepartmentView(departmentRepository));
+            tabs.addTab(tab1, "Отделы");
+            tabs.addStyleName("centered-tabs");
 
-            final Panel contentPanel = new Panel();
-            contentPanel.setSizeFull();
-            rootLayout.addComponent(contentPanel);
-            rootLayout.setExpandRatio(contentPanel, 1.0f);
-
-            setNavigator(new Navigator(this, contentPanel));
-
-        getNavigator().addView("department", new DepartmentView(departmentRepository));
-        getNavigator().addView("employee", new EmployeeView(employeeRepository, departmentRepository));
-
+            VerticalLayout tab2 = new VerticalLayout();
+            tab2.addComponent(new EmployeeView(employeeRepository, departmentRepository));
+            tabs.addTab(tab2, "Сотрудники");
             setContent(rootLayout);
         }
-    }
-
-    private Component createNavigation(){
-
-        final VerticalLayout navigationLayout = new VerticalLayout();
-
-        final Label exercisesLabel = new Label("Навигация");
-        exercisesLabel.setStyleName(ValoTheme.LABEL_H3);
-        navigationLayout.addComponent(exercisesLabel);
-        navigationLayout.addComponent(createNavigationButton("Отделы", "department"));
-        navigationLayout.addComponent(createNavigationButton("Сотрудники", "employee"));
-
-        final Panel navigationPanel = new Panel(navigationLayout);
-        navigationPanel.setStyleName(ValoTheme.PANEL_BORDERLESS);
-        navigationPanel.setHeight("100%");
-        navigationPanel.setWidth("300px");
-        return navigationPanel;
-    }
-
-    private Button createNavigationButton(final String buttonCaption, final String viewName){
-        final Button button = new Button(buttonCaption);
-        button.setStyleName(ValoTheme.BUTTON_LINK);
-        button.addClickListener(e -> getNavigator().navigateTo(viewName));
-        return button;
     }
 
     @WebServlet(urlPatterns = "/admin", name = "BasicsUIServlet", asyncSupported = true)

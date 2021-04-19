@@ -30,6 +30,8 @@ public class DepartmentEntity {
     @Valid
     private List<EmployeeEntity> employeeEntities;
 
+    private long workingHours;
+
     public DepartmentEntity id(Long id) {
         this.id = id;
         return this;
@@ -103,7 +105,12 @@ public class DepartmentEntity {
         return employeeEntities.size();
     }
 
-
+    public long getWorkingHours() {
+        for (EmployeeEntity e : employeeEntities) {
+            workingHours += e.getTime();
+        }
+        return workingHours;
+    }
 
     @Override
     public boolean equals(Object o) {

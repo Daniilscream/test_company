@@ -4,12 +4,15 @@ import com.vaadin.navigator.View;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import ru.aisa.test_company.restservice.admin.CompanyUI;
+import ru.aisa.test_company.restservice.admin.window.DepartmentInfoWindow;
+import ru.aisa.test_company.restservice.configuration.ShiroConfig;
 import ru.aisa.test_company.restservice.model.DepartmentEntity;
 import ru.aisa.test_company.restservice.repository.DepartmentRepository;
 
@@ -25,6 +28,7 @@ public class DepartmentView extends VerticalLayout implements View {
 
     private final TextField filter = new TextField();
     private final Button addNewBtn = new Button("Добавить отдел");
+    private final Button logout = new Button("Выйти");
     private final HorizontalLayout horizontalLayout = new HorizontalLayout();
 
     public DepartmentView(DepartmentRepository departmentRepository) {
@@ -34,7 +38,11 @@ public class DepartmentView extends VerticalLayout implements View {
         departmentGrid.addColumn(DepartmentEntity::getEmployeeSize).setCaption("Количество сотрудников");
         this.departmentRepository = departmentRepository;
 
+        horizontalLayout.setWidth("100%");
         horizontalLayout.addComponents(filter,addNewBtn);
+        horizontalLayout.addComponent(logout);
+        horizontalLayout.setExpandRatio(logout,1.0f);
+        horizontalLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
         addComponent(horizontalLayout);
         addComponent(editor);
         filter.setPlaceholder("Поиск по названию");
@@ -46,8 +54,16 @@ public class DepartmentView extends VerticalLayout implements View {
 
         addNewBtn.addClickListener(e -> editor.editDepartment(new DepartmentEntity()));
 
-        departmentGrid.asSingleSelect().addValueChangeListener(e -> {
-            editor.editDepartment(e.getValue());
+        logout.addClickListener(e -> {
+            ShiroConfig.logout();
+            getUI().close();
+            getUI().getPage().reload();
+        });
+
+        departmentGrid.addItemClickListener(listener ->{
+            if(listener.getMouseEventDetails().isDoubleClick()){
+                getUI().addWindow(new DepartmentInfoWindow(listener.getItem(), departmentRepository));
+            }
         });
 
         editor.setChangeHandler(() -> {

@@ -31,7 +31,6 @@ public class ShiroConfig {
             try {
                 currentUser.login(token);
                 if (currentUser.hasRole("ADMIN")) {
-                    UI.getCurrent().getPage().replaceState("/admin#!department");
                     UI.getCurrent().getPage().reload();
                 }
             } catch (UnknownAccountException uae) {
@@ -50,6 +49,11 @@ public class ShiroConfig {
             }
         }
 
+    }
+
+    public static void logout() {
+        Subject currentUser = SecurityUtils.getSubject();
+        currentUser.logout();
     }
 
     public Subject getCurrentUser() {

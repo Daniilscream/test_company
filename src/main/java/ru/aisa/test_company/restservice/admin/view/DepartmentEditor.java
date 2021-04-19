@@ -65,6 +65,7 @@ public class DepartmentEditor extends VerticalLayout {
             departmentEntity = departmentRepository.findById(newDepartment.getId()).orElse(newDepartment);
         } else {
             departmentEntity = newDepartment;
+            delete.setVisible(false);
         }
         departmentBinder.setBean(departmentEntity);
         setVisible(true);

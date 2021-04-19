@@ -3,11 +3,14 @@ package ru.aisa.test_company.restservice.admin.view;
 import com.vaadin.navigator.View;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.shared.ui.grid.HeightMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import ru.aisa.test_company.restservice.admin.window.EmployeeInfoWindow;
+import ru.aisa.test_company.restservice.configuration.ShiroConfig;
 import ru.aisa.test_company.restservice.model.EmployeeEntity;
 import ru.aisa.test_company.restservice.repository.DepartmentRepository;
 import ru.aisa.test_company.restservice.repository.EmployeeRepository;
@@ -23,6 +26,7 @@ public class EmployeeView extends VerticalLayout implements View {
 
     private final TextField filter = new TextField();
     private final Button addNewBtn = new Button("Добавить сотрудника");
+    private final Button logout = new Button("Выйти");
     private final HorizontalLayout horizontalLayout = new HorizontalLayout();
 
     public EmployeeView(EmployeeRepository employeeRepository, DepartmentRepository departmentRepository) {
@@ -34,7 +38,12 @@ public class EmployeeView extends VerticalLayout implements View {
         departmentGrid.addColumn(EmployeeEntity::getDepartmentName).setCaption("Отдел");
         this.employeeRepository = employeeRepository;
 
+        horizontalLayout.setWidth("100%");
         horizontalLayout.addComponents(filter,addNewBtn);
+        horizontalLayout.addComponent(logout);
+        horizontalLayout.setExpandRatio(logout,1.0f);
+        horizontalLayout.setComponentAlignment(logout, Alignment.TOP_RIGHT);
+
         addComponent(horizontalLayout);
         addComponent(editor);
         filter.setPlaceholder("Поиск по имени");
@@ -46,8 +55,16 @@ public class EmployeeView extends VerticalLayout implements View {
 
         addNewBtn.addClickListener(e -> editor.editEmployee(new EmployeeEntity()));
 
-        departmentGrid.asSingleSelect().addValueChangeListener(e -> {
-            editor.editEmployee(e.getValue());
+        logout.addClickListener(e -> {
+            ShiroConfig.logout();
+            getUI().close();
+            getUI().getPage().reload();
+        });
+
+        departmentGrid.addItemClickListener(listener ->{
+            if(listener.getMouseEventDetails().isDoubleClick()){
+                getUI().addWindow(new EmployeeInfoWindow(listener.getItem(), employeeRepository, departmentRepository));
+            }
         });
 
         editor.setChangeHandler(() -> {

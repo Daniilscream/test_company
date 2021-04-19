@@ -82,6 +82,7 @@ public class EmployeeEditor extends VerticalLayout {
             dateOfReceipt.setVisible(false);
         } else {
             employeeEntity = newEmployee;
+            delete.setVisible(false);
             dateOfReceipt.setVisible(true);
         }
         employeeBinder.setBean(employeeEntity);
